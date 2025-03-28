@@ -46,7 +46,8 @@ class LoginController extends Controller
          * @var User $user
          */
         $user = \auth()->user();
-        $user->tokens()->delete();
+
+        $user?->currentAccessToken()->delete();
 
         return response()->json([
             'redirect' => '/'

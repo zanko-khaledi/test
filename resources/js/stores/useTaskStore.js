@@ -11,17 +11,18 @@ export const useTaskStore = defineStore('tasks', () => {
     const tasksPagination = ref({});
     const url = ref("/tasks");
 
-    const getUrl = ()=> {
+    const getUrl = () => {
         return url.value;
     }
 
-    const setUrl = (endpoint)=> {
+    const setUrl = (endpoint) => {
         url.value = endpoint;
     }
 
-    const request = new ApiService();
+
     const setTask = (values) => {
         return new Promise((resolve, reject) => {
+            const request = new ApiService();
             request.post('/tasks', values).then((res) => {
                 if (res.status === 201) {
                     toast.success('New task successfully created.');
@@ -34,7 +35,7 @@ export const useTaskStore = defineStore('tasks', () => {
         })
     }
 
-    const setTasksPagination = (payload)=> {
+    const setTasksPagination = (payload) => {
         tasksPagination.value = {
             current_page: payload["current_page"],
             from: payload["from"],
@@ -46,44 +47,48 @@ export const useTaskStore = defineStore('tasks', () => {
 
     const fetchTasks = () => {
         return new Promise((resolve, reject) => {
+            const request = new ApiService();
             request.get(getUrl()).then(res => {
-                 tasks.value = res.data;
-                 resolve(res);
+                tasks.value = res.data;
+                resolve(res);
             }).catch(err => {
                 reject(err);
             })
         });
     }
 
-    const fetchTask = (id)=> {
-        return new Promise((resolve, reject)=> {
+    const fetchTask = (id) => {
+        return new Promise((resolve, reject) => {
+            const request = new ApiService();
             request.get(`/tasks/${id}`).then(res => {
-               task.value = res.data;
-               resolve(res);
+                task.value = res.data;
+                resolve(res);
             }).catch(err => {
                 reject(err);
             });
         });
     }
 
-    const destroyTask = (id)=> {
+    const destroyTask = (id) => {
 
-        return new Promise((resolve, reject)=> {
-             request.remove(`/tasks/${id}`,{
-                 headers : {
-                     "Content-Type" : "application/json"
-                 }
-             }).then(res => {
-                 resolve(res);
-             }).catch(err => {
-                 reject(err);
-             });
+        return new Promise((resolve, reject) => {
+            const request = new ApiService();
+            request.remove(`/tasks/${id}`, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res => {
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            });
         });
     }
 
-    const updateStatus = (id,status)=> {
-        return new Promise((resolve, reject)=> {
-            request.patch(`/tasks/${id}/update-status`,{status}).then(res => {
+    const updateStatus = (id, status) => {
+        return new Promise((resolve, reject) => {
+            const request = new ApiService();
+            request.patch(`/tasks/${id}/update-status`, {status}).then(res => {
                 resolve(res);
             }).catch(err => {
                 reject(err);
@@ -91,17 +96,18 @@ export const useTaskStore = defineStore('tasks', () => {
         })
     }
 
-    const update = (id,data={})=> {
-        return new Promise((resolve, reject)=> {
-           request.patch(`/tasks/${id}`,data,{
-               headers : {
-                   "Content-Type" : "application/json"
-               }
-           }).then(res => {
-              resolve(res);
-           }).catch(err => {
-               reject(err);
-           });
+    const update = (id, data = {}) => {
+        return new Promise((resolve, reject) => {
+            const request = new ApiService();
+            request.patch(`/tasks/${id}`, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(res => {
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            });
         });
     }
 

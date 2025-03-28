@@ -40,7 +40,7 @@
                 <tr v-for="(item,index) in  tasks" :key="index">
                     <td>{{ item.id }}</td>
                     <td>{{ item.title || '' }}</td>
-                    <td>{{ item.description.toString().substring(0, 50) + '...' }}</td>
+                    <td>{{ item.description?.toString().substring(0, 50) + '...' }}</td>
                     <td>{{ getStatusText(item.status) }}</td>
                     <td>{{ item.started_at }}</td>
                     <td>{{ item.ended_at }}</td>

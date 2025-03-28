@@ -55,7 +55,7 @@ export default defineComponent({
                 password : password.value
             };
 
-            schema.validate(data,{abortEarly:false}).then(res => {
+            schema.validate(data).then(res => {
                 authStore.login(data).then(res => {
                     if(res.status === 201){
                          router.push({

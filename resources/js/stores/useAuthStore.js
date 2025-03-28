@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth',()=> {
     }
     const setJwtAuth = (token)=> {
         localStorage.setItem('token',token);
-        jwtAuth.value = localStorage.getItem('token');
+        jwtAuth.value = token;
     }
     const login = (params = {})=> {
         return new Promise((resolve,reject)=> {

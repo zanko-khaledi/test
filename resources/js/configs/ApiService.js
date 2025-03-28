@@ -1,35 +1,45 @@
-import HTTPRequest from "@/configs/HTTPRequest.js";
 import {useAuthStore} from "@/stores/useAuthStore.js";
-import {Axios} from "axios";
+import axios, {Axios} from "axios";
 class ApiService {
 
     constructor(basePath = "/api/v1") {
         this.authStore = useAuthStore();
-        this.request = HTTPRequest({
-            baseURL : basePath,
-            headers : {
-                Authorization: `Bearer ${this.authStore.getJwtAuth()}`
-            }
-        })
-    }
-    get(url="",configs = {}){
-        return this.request.get(url,configs);
+        this.request = axios.create({
+            baseURL : basePath
+        });
+
+        this.setAuthHeader();
     }
 
-    post(url = "",params = {},configs = {}){
-        return this.request.post(url,params,configs);
+    setAuthHeader() {
+        const token = localStorage.getItem("token");
+        if (token) {
+            this.request.defaults.headers.Authorization = `Bearer ${token}`;
+        }
+    }
+    get(url = "", configs = {}) {
+        this.setAuthHeader();
+        return this.request.get(url, configs);
     }
 
-    put(url="",params={},configs = {}){
-         return this.request.put(url,params,configs);
+    post(url = "", params = {}, configs = {}) {
+        this.setAuthHeader();
+        return this.request.post(url, params, configs);
     }
 
-    patch(url = "",params = {},configs = {}){
-         return this.request.patch(url,params,configs)
+    put(url = "", params = {}, configs = {}) {
+        this.setAuthHeader();
+        return this.request.put(url, params, configs);
     }
 
-    remove(url = "",configs = {}){
-        return this.request.delete(url,configs);
+    patch(url = "", params = {}, configs = {}) {
+        this.setAuthHeader();
+        return this.request.patch(url, params, configs);
+    }
+
+    remove(url = "", configs = {}) {
+        this.setAuthHeader();
+        return this.request.delete(url, configs);
     }
 }
 
